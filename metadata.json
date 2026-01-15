@@ -1,0 +1,5 @@
+{
+  "name": "Vanguard Security Auditor",
+  "description": "An advanced AI-driven cybersecurity penetration testing assistant that analyzes system architectures for OWASP vulnerabilities and suggests reconnaissance strategies.",
+  "requestFramePermissions": []
+}
