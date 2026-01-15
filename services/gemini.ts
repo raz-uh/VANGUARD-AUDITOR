@@ -67,8 +67,10 @@ const AUDIT_SCHEMA = {
             items: { type: Type.STRING }
           },
           validationPayload: { type: Type.STRING },
+          pocExplainer: { type: Type.STRING },
+          expectedOutcome: { type: Type.STRING },
         },
-        required: ["title", "vulnerabilityType", "impact", "stepsToReproduce", "validationPayload"],
+        required: ["title", "vulnerabilityType", "impact", "stepsToReproduce", "validationPayload", "pocExplainer", "expectedOutcome"],
       },
     },
     summary: { type: Type.STRING },
@@ -79,20 +81,20 @@ const AUDIT_SCHEMA = {
 export async function analyzeWebsite(description: string): Promise<AuditResponse> {
   const model = "gemini-3-pro-preview";
   const systemInstruction = `You are a world-class Cybersecurity Penetration Tester and Web Security Auditor. 
-Your objective is to perform a detailed technical analysis and generate SUBMISSION-READY Bug Bounty reports.
+Your objective is to perform a detailed technical analysis and generate SUBMISSION-READY Bug Bounty reports with explicit Proof of Concept (PoC) validation logic.
 
 RULES:
 1. Tone: Clinical, professional, and report-oriented.
-2. Bug Bounty Reports: For each major vulnerability, provide a report formatted for platforms like HackerOne. 
-3. Steps to Reproduce: Must be clear, numbered, and technically accurate.
-4. Validation Payload: Provide a specific CURL command, Python snippet, or Burp Suite request that proves the vulnerability.
-5. Impact: Focus on the business and technical risk (e.g., Data Exfiltration, Account Takeover).
+2. Proof of Concept (PoC): For every finding, you must explain exactly HOW to prove it (pocExplainer) and what the SUCCESSFUL validation looks like (expectedOutcome).
+3. Bug Bounty Reports: For each major vulnerability, provide a report formatted for platforms like HackerOne. 
+4. Steps to Reproduce: Must be clear, numbered, and technically accurate.
+5. Validation Payload: Provide a specific CURL command, Python snippet, or Burp Suite request that proves the vulnerability.
 
 DISCLAIMER: This report is for educational and authorized auditing purposes only.`;
 
   const response = await ai.models.generateContent({
     model,
-    contents: `Conduct a full security audit and generate bug bounty reports for: ${description}`,
+    contents: `Conduct a full security audit, including "Proof of Concept" (PoC) validation details for: ${description}`,
     config: {
       systemInstruction,
       responseMimeType: "application/json",

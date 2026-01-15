@@ -31,6 +31,8 @@ export interface BugBountyReport {
   impact: string;
   stepsToReproduce: string[];
   validationPayload: string;
+  pocExplainer: string;
+  expectedOutcome: string;
 }
 
 export interface AuditResponse {
